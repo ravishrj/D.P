@@ -1,0 +1,92 @@
+Edit Distance
+Difficulty: MEDIUM
+Contributed By
+Arshit Babariya
+|
+Level 1
+Avg. time to solve
+30 min
+Success Rate
+70%
+Problem Statement
+You are given two strings 'S' and 'T' of lengths 'N' and 'M' respectively. Find the "Edit Distance" between the strings.
+Edit Distance of two strings is the minimum number of steps required to make one string equal to the other. In order to do so, you can perform the following three operations:
+1. Delete a character
+2. Replace a character with another one
+3. Insert a character
+Note:
+Strings don't contain spaces in between.
+ Input Format:
+The first line of input contains the string 'S' of length 'N'.
+
+The second line of the input contains the String 'T' of length 'M'.
+Output Format:
+The only line of output prints the minimum "Edit Distance" between the strings.
+Note:
+You do not need to print anything; it has already been taken care of. Just implement the given functions.
+Constraints:
+0 <= N <= 10 ^ 3
+0 <= M <= 10 ^ 3
+
+Time Limit : 1sec
+Sample Input 1 :
+abc
+dc
+Sample Output 1 :
+2
+ Explanation For Sample Input 1 :
+In 2 operations we can make the string T to look like string S. First, insert the character 'a' to string T, which makes it "adc".
+
+And secondly, replace the character 'd' of the string T with 'b' from the string S. This would make string T to "abc" which is also the string S. Hence, the minimum distance.
+Sample Input 2 :
+whgtdwhgtdg
+aswcfg
+Sample Output 2 :
+9
+===========================================================================================================================================================================
+
+int solve(int i,int j,string str1, string str2,vector<vector<int>>& dp)
+{
+	if(i<0) return j+1;
+	if(j<0) return i+1; 
+	if(dp[i][j]!=-1)
+		return dp[i][j];
+	if(str1[i]==str2[j])
+		return dp[i][j]=0+solve(i-1,j-1,str1,str2,dp);
+	
+		return dp[i][j]=1+min(solve(i-1,j,str1,str2,dp),min(solve(i,j-1,str1,str2,dp),solve(i-1,j-1,str1,str2,dp)));
+		
+}
+
+int editDistance(string str1, string str2)
+{
+   int n=str1.size();
+	int m=str2.size();
+// 	vector<vector<int>> dp(n,vector<int>(m,-1));
+	//return solve(n-1,m-1,str1,str2,dp);
+	
+	vector<vector<int>> dp(n+1,vector<int>(m+1,0));
+	
+	for(int i=0;i<=n;i++)
+	{
+		dp[i][0]=i;
+	}
+	for(int j=0;j<=m;j++)
+	{
+		dp[0][j]=j;
+	}
+	for(int i=1;i<=n;i++)
+	{
+		for(int j=1;j<=m;j++)
+		{
+			if(str1[i-1]==str2[j=1])
+				dp[i][j]=dp[i-1][j-1];
+			else
+			{
+			   dp[i][j]=1+min(dp[i-1][j],min(dp[i][j-1],dp[i-1][j-1]));
+			}
+		}
+	}
+	return dp[n][m];
+    
+}
