@@ -1,0 +1,74 @@
+Best Time to Buy and Sell Stock II
+Difficulty: MEDIUM
+Contributed By
+Pankaj Sharma
+|
+Level 1
+Avg. time to solve
+22 min
+Problem Statement
+You have been given stock values/prices for N number of days. Every i-th day signifies the price of a stock on that day. Your task is to find the maximum profit which you can make by buying and selling the stocks.
+ Note :
+You may make as many transactions as you want but can not have more than one transaction at a time i.e, if you have the stock, you need to sell it first, and then only you can buy it again.
+Input Format :
+The first line contains an integer 't' which denotes the number of test cases or queries to be run. Then the test cases follow.
+
+The first line of each test case or query contains an integer 'N' representing the total number of days for which you have stock prices.
+
+The second line contains 'N' single space-separated integers representing the price of the stock on i-th day.
+Output Format :
+For each test case, print the maximum profit that you can earn.
+
+Output for every test case will be printed in a separate line.
+Note :
+You are not required to print anything explicitly. Just implement the function.
+Constraints :
+1 <= t <= 10^2
+0 <= N <= 10^5
+Time Limit: 1 sec
+Sample Input 1 :
+1
+7
+1 2 3 4 5 6 7
+Sample Output 1 :
+6
+Explanation :
+We can make the maximum profit by buying the stock on the first day and selling it on the last day.
+Sample Input 2 :
+1
+7
+7 6 5 4 3 2 1
+Sample Output 2 :
+0
+Explanation :
+We can make the maximum profit by not buying the stock.
+
+
+===============================================================================================================================================================
+
+
+#include<bits/stdc++.h>
+
+long solve(int ind,int buy,long *values,vector<vector<long> >&dp,int n)
+{
+    if(ind==n)
+        return 0;
+    if(dp[ind][buy]!=-1)
+        return dp[ind][buy];
+    long profit=0;
+    if(buy)
+    {
+       profit=max{-values[ind]+solve(ind+1,0,values,dp,n),0+solve(ind+1,1,values,dp,n)};
+    }
+    else
+    {
+        profit=max{values[ind]+solve(ind+1,1,values,dp,n),0+solve(ind+1,0,values,dp,n)}
+    }
+    return dp[ind][buy]=profit;
+    
+}
+long getMaximumProfit(long *values, int n)
+{
+   vector<vector<long>>dp(n,vector<long>(2,-1));
+    return solve(0,1,values,dp,n);
+}
