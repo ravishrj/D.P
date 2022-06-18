@@ -1,0 +1,76 @@
+Best Time to Buy and Sell Stock III
+Difficulty: HARD
+Contributed By
+Himanshu Tanwar
+|
+Level 1
+Problem Statement
+You are Harshad Mehta’s friend. He told you the price of a particular stock for the next ‘N’ days. You can either buy or sell a stock. Also, you can only complete at most 2-transactions. Find the maximum profit that you can earn from these transactions. You can take help from Mr. Mehta as well.
+Note
+1. Buying a stock and then selling it is called one transaction. 
+2. You are not allowed to do multiple transactions at the same time. This means you have to sell the stock before buying it again. 
+Input Format:
+The first line contains a single integer 'T' representing the number of test cases.      
+Then 'T' test cases follow:
+
+The first line of each test case contains an integer 'N' denoting the number of days. 
+
+The second line of each test case contains 'N' space-separated integers, where the 'i-th' element is the price of the particular stock on the 'i-th' day. 
+Output Format :
+For each test case, the first and only line of output contains an integer denoting the maximum profit. 
+
+The output of every test case is printed in a separate line.
+Note:
+You do not need to print anything, it has already been taken care of. Just implement the given function.
+Constraints:
+1 <= T <= 10
+1 <= N <= 5 * 10^4
+0 <= price <= 10^3
+
+Where ‘price’ is the price of the stock on each day. 
+
+Time Limit: 1 sec
+Sample Input 1:
+1
+7
+3 3 5 0 3 1 4
+Sample Output 1:
+6
+Explanation Of Sample Output 1:
+The maximum profit can be earned by:
+Transaction 1: Buying the stock on day 4 ( price 0 ) and then selling it on day 5 ( price 3 ). 
+Transaction 2: Buying the stock on day 6 ( price 1 ) and then selling it on day 6 ( price 4 ).
+Total profit earned will be (3 - 0) + ( 4 - 1) = 6. 
+Sample Input2:
+1 
+5
+5 4 3 2 1
+Sample Output2:
+0
+Explanation Of Sample Output 2
+It's better to not do any transaction as the prices of the stock are decreasing. 
+
+=======================================================================================================================================================================================================
+
+#include<bits/stdc++.h>
+int solve(int i,int buy,vector<int>& prices,int cap,int n,vector<vector<vector<int>>> &dp)
+{
+    if(i==n || cap==0)
+        return 0;
+    if(dp[i][buy][cap]!=-1)
+        return dp[i][buy][cap];
+     if(buy==1)
+     {
+return dp[i][buy][cap]=max((-prices[i]+solve(i+1,0,prices,cap,n,dp)),0+solve(i+1,1,prices,cap,n,dp)); 
+     }
+    else
+    {
+       return dp[i][buy][cap]=max((prices[i]+solve(i+1,1,prices,cap-1,n,dp)),0+solve(i+1,0,prices,cap,n,dp)); 
+    }
+}
+
+int maxProfit(vector<int>& prices, int n)
+{
+    vector<vector<vector<int>>> dp(n,vector<vector<int>>(2,vector<int>(3,-1)));
+    return solve(0,1,prices,2,n,dp);
+}
